@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Расписание ПДА 1-25</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Цветовая палитра (Темная тема) */
+            --bg-main: #0f172a; /* Глубокий темный фон */
+            --bg-card: rgba(30, 41, 59, 0.7); /* Полупрозрачные карточки */
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-white-week: #3b82f6; /* Синий для белой недели */
+            --accent-black-week: #f59e0b; /* Оранжевый для черной недели */
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 100%, hsla(225,39%,30%,1) 0, transparent 50%);
+            margin: 0;
+            padding: 0 0 70px 0; /* Отступ для футера */
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Анимация появления при загрузке */
+        .container {
+            padding: 15px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HEADER & ПЕРЕКЛЮЧАТЕЛЬ --- */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.85); /* Полупрозрачный фон */
+            backdrop-filter: blur(12px); /* Эффект размытия фона */
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .app-title {
+            font-size: 1.2em;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            background: linear-gradient(45deg, var(--accent-white-week), var(--accent-black-week));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Кастомный переключатель (Toggle) */
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .switch-label { font-weight: bold; font-size: 0.9em; }
+        #switch-text-w { color: var(--accent-white-week); opacity: 0.5; transition: 0.3s; }
+        #switch-text-b { color: var(--accent-black-week); opacity: 0.5; transition: 0.3s; }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--accent-white-week); /* Фон для белой */
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px; width: 20px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider { background-color: var(--accent-black-week); } /* Фон для черной */
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* Активные подписи */
+        body.show-white #switch-text-w { opacity: 1; transform: scale(1.1); }
+        body.show-black #switch-text-b { opacity: 1; transform: scale(1.1); }
+
+        /* --- ДНИ И КАРТОЧКИ УРОКОВ --- */
+        .day-section {
+            margin-top: 25px;
+        }
+
+        .day-title {
+            font-size: 1.4em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Подсветка текущего дня */
+        .day-section.current-day .day-title {
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+
+        .lesson-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: stretch;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Эффект при наведении */
+        .lesson-card:active { transform: scale(0.98); }
+
+        /* Подсветка текущего урока */
+        .lesson-card.now-active {
+            border: 2px solid var(--success-color);
+            background: rgba(16, 185, 129, 0.15); /* Зеленоватый фон */
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+        .lesson-card.now-active::after {
+            content: 'ИДЕТ СЕЙЧАС';
+            position: absolute;
+            top: 0; right: 0;
+            background: var(--success-color);
+            color: white;
+            font-size: 0.7em;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .time-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 75px;
+            border-right: 1px solid var(--border-color);
+            padding-right: 15px;
+            margin-right: 15px;
+            text-align: center;
+        }
+
+        .time-start { font-size: 1.1em; font-weight: 800; }
+        .time-end { font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;}
+
+        .info-col { flex-grow: 1; }
+
+        .subject {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+            line-height: 1.3;
+        }
+
+        .details-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        .detail-item { display: flex; align-items: center; gap: 6px; }
+        .detail-item i { font-size: 1.1em; opacity: 0.7; }
+        .cabinet-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+
+        /* --- ПЛАВНАЯ АНИМАЦИЯ ПЕРЕКЛЮЧЕНИЯ НЕДЕЛЬ --- */
+        .week-w, .week-b {
+            max-height: 200px; /* Примерная высота карточки */
+            opacity: 1;
+            transform: translateY(0);
+            /* Цветные индикаторы слева */
+        }
+        .week-w { border-left: 4px solid var(--accent-white-week); }
+        .week-b { border-left: 4px solid var(--accent-black-week); }
+
+        /* Состояния скрытия */
+        body.show-black .week-w,
+        body.show-white .week-b {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 12px;
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+        .footer strong { color: var(--text-primary); }
+        .heart-icon { color: #e11d48; animation: pulse 1.5s infinite; display: inline-block;}
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+    </style>
+</head>
+<body class="show-white"> <div class="header">
+        <div class="app-title"><i class="ri-calendar-todo-fill"></i> ПДА 1-25 Расписание</div>
+        <div class="switch-container">
+            <span id="switch-text-w" class="switch-label">Белая</span>
+            <label class="switch">
+                <input type="checkbox" id="weekToggle">
+                <span class="slider"></span>
+            </label>
+            <span id="switch-text-b" class="switch-label">Черная</span>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="day-section" id="day-1">
+            <div class="day-title"><i class="ri-calendar-check-line"></i>Понедельник</div>
+            <div class="lesson-card week-both" data-start="08:30" data-end="09:50">
+                <div class="time-col">
+                    <span class="time-start">08:30</span>
+                    <span class="time-end">09:50</span>
+                </div>
+                <div class="info-col">
+                    <span class="subject">Алгебра (прак)</span>
+                    <div class="details-row">
+                        <span class="detail-item"><i class="ri-user-line"></i>Джолумбекова М.Т.</span>
+                        <span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card week-both" data-start="10:00" data-end="11:20">
+                <div class="time-col">
+                    <span class="time-start">10:00</span>
+                    <span class="time-end">11:20</span>
+                </div>
+                <div class="info-col">
+                    <span class="subject">Русский язык (прак)</span>
+                    <div class="details-row">
+                        <span class="detail-item"><i class="ri-user-line"></i>Алдашева Э.К.</span>
+                        <span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lesson-card week-w" data-start="11:30" data-end="12:50">
+                <div class="time-col">
+                    <span class="time-start">11:30</span>
+                    <span class="time-end">12:50</span>
+                </div>
+                <div class="info-col">
+                    <span class="subject">География (прак)</span>
+                    <div class="details-row">
+                        <span class="detail-item"><i class="ri-user-line"></i>Атанова З.А.</span>
+                        <span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-card week-b" data-start="11:30" data-end="12:50">
+                <div class="time-col">
+                    <span class="time-start">11:30</span>
+                    <span class="time-end">12:50</span>
+                </div>
+                <div class="info-col">
+                    <span class="subject">Кыргызская литература</span>
+                    <div class="details-row">
+                        <span class="detail-item"><i class="ri-user-line"></i>Орозказиева А.</span>
+                        <span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="day-section" id="day-2">
+            <div class="day-title"><i class="ri-calendar-check-line"></i>Вторник</div>
+            <div class="lesson-card week-w" data-start="08:30" data-end="09:50">
+                <div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Алгебра (прак)</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Джолумбекова М.Т.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-b" data-start="08:30" data-end="09:50">
+                <div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Геометрия (прак)</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Джолумбекова М.Т.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-both" data-start="10:00" data-end="11:20">
+                <div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div>
+                <div class="info-col">
+                    <span class="subject">Допризывная подготовка</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Мырзаказы уулу И.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-w" data-start="11:30" data-end="12:50">
+                <div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Русская литература</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Алдашева Э.К.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+             <div class="lesson-card week-b" data-start="11:30" data-end="12:50">
+                <div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Кыргызский язык</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Орозказиева/Султан.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">509/503</span></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-section" id="day-3">
+            <div class="day-title"><i class="ri-calendar-check-line"></i>Среда</div>
+            <div class="lesson-card week-both" data-start="08:30" data-end="09:50">
+                <div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Кыргызский язык</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Орозказиева/Султан.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503/407</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-both" data-start="10:00" data-end="11:20">
+                <div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div>
+                <div class="info-col">
+                    <span class="subject">История (прак)</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Исраилова А.Б.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-both" data-start="11:30" data-end="12:50">
+                <div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Иностранный язык</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Казакбаева Г.А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+             <div class="lesson-card week-both" data-start="13:00" data-end="14:20">
+                <div class="time-col"><span class="time-start">13:00</span><span class="time-end">14:20</span></div>
+                <div class="info-col">
+                    <span class="subject">Русская литература</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Алдашева Э.К.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">509</span></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-section" id="day-4">
+            <div class="day-title"><i class="ri-calendar-check-line"></i>Четверг</div>
+            <div class="lesson-card week-both" data-start="08:30" data-end="09:50">
+                <div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Химия (прак)</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Рыспек к Ж.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-both" data-start="10:00" data-end="11:20">
+                <div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div>
+                <div class="info-col">
+                    <span class="subject">Физика (Астрономия)</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Керимкулова А.Ш.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-both" data-start="11:30" data-end="12:50">
+                <div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Физическая культура</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Ташбеков</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">6К</span></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-section" id="day-5">
+            <div class="day-title"><i class="ri-calendar-check-line"></i>Пятница</div>
+            <div class="lesson-card week-w" data-start="08:30" data-end="09:50">
+                <div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Человек и общество</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Исраилова А.Б.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+             <div class="lesson-card week-b" data-start="08:30" data-end="09:50">
+                <div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Биология (прак)</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Эгешова А.А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+             <div class="lesson-card week-w" data-start="10:00" data-end="11:20">
+                <div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div>
+                <div class="info-col">
+                    <span class="subject">Физика (прак)</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Керимкулова А.Ш.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+             <div class="lesson-card week-b" data-start="10:00" data-end="11:20">
+                <div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div>
+                <div class="info-col">
+                    <span class="subject">Практ. грамматика англ.</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Жапаркул к А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+            <div class="lesson-card week-both" data-start="11:30" data-end="12:50">
+                <div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div>
+                <div class="info-col">
+                    <span class="subject">Деловой иностр. язык</span>
+                    <div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Жапаркул к А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div>
+                </div>
+            </div>
+        </div>
+
+    </div> <div class="footer">
+        Сделано с <span class="heart-icon"><i class="ri-heart-fill"></i></span> для группы ПДА 1-25<br>
+        Автор: <strong>TNZ</strong>
+    </div>
+
+
+    <script>
+        const toggle = document.getElementById('weekToggle');
+        const body = document.body;
+
+        // 1. Функция определения номера недели в году (ISO 8601)
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            return weekNo;
+        }
+
+        // 2. Автоматическая установка недели при загрузке
+        const currentWeekNum = getWeekNumber(new Date());
+        // ЛОГИКА: Если неделя нечетная - БЕЛАЯ, если четная - ЧЕРНАЯ.
+        // (Если у вас в универе наоборот, поменяй местами 'show-white' и 'show-black' ниже)
+        if (currentWeekNum % 2 !== 0) {
+            body.className = 'show-white';
+            toggle.checked = false;
+        } else {
+            body.className = 'show-black';
+            toggle.checked = true;
+        }
+
+        // 3. Ручное переключение
+        toggle.addEventListener('change', function() {
+            if(this.checked) {
+                body.className = 'show-black';
+            } else {
+                body.className = 'show-white';
+            }
+            // Небольшая задержка, чтобы анимация скрытия прошла плавно перед пересчетом активного урока
+            setTimeout(highlightCurrentLesson, 350);
+        });
+
+        // 4. Подсветка текущего дня и УРОКА
+        function highlightCurrentLesson() {
+            const now = new Date();
+            const day = now.getDay(); // 1-Пн, 5-Пт
+            const currentHours = now.getHours();
+            const currentMinutes = now.getMinutes();
+            const currentTimeValue = currentHours * 60 + currentMinutes;
+
+            // Сначала убираем всю старую подсветку
+            document.querySelectorAll('.current-day').forEach(el => el.classList.remove('current-day'));
+            document.querySelectorAll('.now-active').forEach(el => el.classList.remove('now-active'));
+
+            if (day >= 1 && day <= 5) {
+                const daySection = document.getElementById('day-' + day);
+                if (daySection) {
+                    daySection.classList.add('current-day');
+
+                    // Ищем текущий урок внутри этого дня
+                    const lessons = daySection.querySelectorAll('.lesson-card');
+                    lessons.forEach(lesson => {
+                        // Проверяем, виден ли урок в текущем режиме недели (не скрыт ли он анимацией)
+                        if (window.getComputedStyle(lesson).maxHeight === '0px') return;
+
+                        const startParts = lesson.dataset.start.split(':').map(Number);
+                        const endParts = lesson.dataset.end.split(':').map(Number);
+                        const startTimeValue = startParts[0] * 60 + startParts[1];
+                        const endTimeValue = endParts[0] * 60 + endParts[1];
+
+                        if (currentTimeValue >= startTimeValue && currentTimeValue < endTimeValue) {
+                            lesson.classList.add('now-active');
+                        }
+                    });
+                }
+            }
+        }
+
+        
+        highlightCurrentLesson();
+                                                        // И обновляем каждую минуту, чтобы метка "ИДЕТ СЕЙЧАС" двигалась
+        setInterval(highlightCurrentLesson, 60000);
+
+    </script>
+</body>
+</html>
