@@ -251,9 +251,56 @@
         .heart-icon { color: #e11d48; animation: pulse 1.5s infinite; display: inline-block;}
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
+        /* --- СТИЛИ ДЛЯ ПРАНКА (НОВОЕ) --- */
+        .gift-btn {
+            position: fixed;
+            bottom: 80px; /* Чтобы не перекрывал футер */
+            right: 15px;
+            width: 45px;
+            height: 45px;
+            background: var(--accent-black-week);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 999;
+            cursor: pointer;
+            animation: giftJump 2s infinite;
+        }
+        @keyframes giftJump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        #prank-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        #prank-overlay img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
     </style>
 </head>
-<body class="show-white"> <div class="header">
+<body class="show-white"> 
+
+    <div id="prank-overlay" onclick="this.style.display='none'">
+        <img id="prank-img" src="" alt="">
+    </div>
+
+    <div class="gift-btn" id="gift-trigger">
+        <i class="ri-gift-fill"></i>
+    </div>
+
+    <div class="header">
         <div class="app-title"><i class="ri-calendar-todo-fill"></i> ПДА 1-25 Расписание</div>
         <div class="switch-container">
             <span id="switch-text-w" class="switch-label">Белая</span>
@@ -484,7 +531,6 @@
         // 2. Автоматическая установка недели при загрузке
         const currentWeekNum = getWeekNumber(new Date());
         // ЛОГИКА: Если неделя нечетная - БЕЛАЯ, если четная - ЧЕРНАЯ.
-        // (Если у вас в универе наоборот, поменяй местами 'show-white' и 'show-black' ниже)
         if (currentWeekNum % 2 !== 0) {
             body.className = 'show-white';
             toggle.checked = false;
@@ -500,7 +546,6 @@
             } else {
                 body.className = 'show-white';
             }
-            // Небольшая задержка, чтобы анимация скрытия прошла плавно перед пересчетом активного урока
             setTimeout(highlightCurrentLesson, 350);
         });
 
@@ -512,7 +557,6 @@
             const currentMinutes = now.getMinutes();
             const currentTimeValue = currentHours * 60 + currentMinutes;
 
-            // Сначала убираем всю старую подсветку
             document.querySelectorAll('.current-day').forEach(el => el.classList.remove('current-day'));
             document.querySelectorAll('.now-active').forEach(el => el.classList.remove('now-active'));
 
@@ -521,10 +565,8 @@
                 if (daySection) {
                     daySection.classList.add('current-day');
 
-                    // Ищем текущий урок внутри этого дня
                     const lessons = daySection.querySelectorAll('.lesson-card');
                     lessons.forEach(lesson => {
-                        // Проверяем, виден ли урок в текущем режиме недели (не скрыт ли он анимацией)
                         if (window.getComputedStyle(lesson).maxHeight === '0px') return;
 
                         const startParts = lesson.dataset.start.split(':').map(Number);
@@ -539,11 +581,21 @@
                 }
             }
         }
-
         
         highlightCurrentLesson();
-                                                        // И обновляем каждую минуту, чтобы метка "ИДЕТ СЕЙЧАС" двигалась
         setInterval(highlightCurrentLesson, 60000);
+
+        // --- ЛОГИКА ПРАНКА (НОВОЕ) ---
+        const giftTrigger = document.getElementById('gift-trigger');
+        const prankOverlay = document.getElementById('prank-overlay');
+        const prankImg = document.getElementById('prank-img');
+        
+        // ТУТ ВСТАВЬ ССЫЛКУ НА ФОТО:
+      const MY_IMAGE_URL = "https://i.redd.it/861gk9gqka0c1.png";
+        giftTrigger.addEventListener('click', () => {
+            prankImg.src = MY_IMAGE_URL;
+            prankOverlay.style.display = 'flex';
+        });
 
     </script>
 </body>
