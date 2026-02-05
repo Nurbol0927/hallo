@@ -18,7 +18,6 @@
             --battle-blue: #3b82f6;
         }
 
-        /* ОТКЛЮЧАЕМ ВСЕ ЛИШНЕЕ ДЛЯ ТЕЛЕФОНА */
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
@@ -36,7 +35,6 @@
             overflow-x: hidden; 
         }
 
-        /* --- КНОПКИ МЕНЮ --- */
         .action-bar {
             position: fixed; bottom: 30px; left: 0; width: 100%;
             display: flex; justify-content: center; gap: 10px; z-index: 999;
@@ -57,7 +55,6 @@
         .btn-notes { background: var(--success-color); }
         .btn-gift { background: var(--accent-black-week); border-radius: 50%; }
 
-        /* --- АРКАН ТАРТЫШ --- */
         #modal-battle .modal-body {
             display: flex; flex-direction: column; 
             height: 80vh; 
@@ -118,7 +115,6 @@
             border-radius: 15px; border: none; font-size: 1.2em; cursor: pointer;
         }
 
-        /* --- СТАНДАРТНЫЕ СТИЛИ --- */
         .week-status { font-size: 0.8em; font-weight: 800; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; margin-top: 2px; display: inline-block; }
         body.show-white .week-status { background: var(--accent-white-week); color: white; }
         body.show-black .week-status { background: var(--accent-black-week); color: black; }
@@ -126,14 +122,14 @@
         .weather-badge { font-size: 0.9em; display: flex; align-items: center; gap: 5px; color: var(--text-secondary); font-weight: bold; }
         .weather-badge i { font-size: 1.2em; color: #fbbf24; }
 
-        #notepad-area { width: 100%; height: 60vh; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-primary); padding: 15px; font-size: 1.1em; resize: none; outline: none; font-family: inherit; }
+        #notepad-area { width: 100%; height: 60vh; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: var(--text-primary); padding: 15px; font-size: 1.1em; resize: none; outline: none; font-family: inherit; }
         
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 10000; flex-direction: column; padding: 20px; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
         .modal-body { overflow-y: auto; flex-grow: 1; }
         .close-icon { font-size: 32px; color: var(--text-secondary); cursor: pointer; }
 
-        .student-row { background: var(--bg-card); padding: 12px; margin-bottom: 6px; border-radius: 10px; border: 1px solid var(--border-color); font-size: 0.95em; display: flex; justify-content: space-between; align-items: center; }
+        .student-row { background: var(--bg-card); padding: 12px; margin-bottom: 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.95em; display: flex; justify-content: space-between; align-items: center; }
         .highlight-name { border: 1px solid var(--accent-black-week); color: var(--accent-black-week); font-weight: bold; background: rgba(245, 158, 11, 0.1); }
         .bday-icon { color: #ec4899; animation: bounce 1s infinite; font-size: 1.2em; }
 
@@ -147,22 +143,11 @@
         .container { padding: 15px; opacity: 0; animation: fadeIn 0.8s ease-out forwards; }
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
         
-        .header { position: sticky; top: 0; z-index: 100; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .header { position: sticky; top: 0; z-index: 100; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .app-title { font-size: 1.1em; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(45deg, var(--accent-white-week), var(--accent-black-week)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .controls-right { display: flex; align-items: center; gap: 12px; }
-        
-        /* КНОПКА ЯЗЫКА */
-        .lang-btn {
-            background: transparent;
-            border: 1px solid var(--text-secondary);
-            color: var(--text-primary);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.8em;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .lang-btn { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-primary); padding: 4px 8px; border-radius: 6px; font-size: 0.8em; font-weight: bold; cursor: pointer; }
 
         .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -174,14 +159,13 @@
         .day-section { margin-top: 25px; }
         .day-title { font-size: 1.4em; font-weight: 800; margin-bottom: 15px; padding-left: 10px; border-left: 4px solid var(--text-secondary); display: flex; align-items: center; gap: 10px; }
         .day-section.current-day .day-title { border-color: var(--success-color); color: var(--success-color); }
-        .lesson-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: stretch; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .lesson-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: stretch; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
         .lesson-card:active { transform: scale(0.98); }
         .lesson-card.now-active { border: 2px solid var(--success-color); background: rgba(16, 185, 129, 0.15); box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
         
-        /* Стиль для плашки "ИДЕТ СЕЙЧАС" (генерируется JS) */
         .now-badge { position: absolute; top: 0; right: 0; background: var(--success-color); color: white; font-size: 0.7em; font-weight: bold; padding: 4px 8px; border-bottom-left-radius: 10px; }
 
-        .time-col { display: flex; flex-direction: column; justify-content: center; min-width: 75px; border-right: 1px solid var(--border-color); padding-right: 15px; margin-right: 15px; text-align: center; }
+        .time-col { display: flex; flex-direction: column; justify-content: center; min-width: 75px; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 15px; margin-right: 15px; text-align: center; }
         .time-start { font-size: 1.1em; font-weight: 800; }
         .time-end { font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;}
         .info-col { flex-grow: 1; }
@@ -190,10 +174,10 @@
         .detail-item { display: flex; align-items: center; gap: 6px; }
         .detail-item i { font-size: 1.1em; opacity: 0.7; }
         .cabinet-badge { background: rgba(255, 255, 255, 0.1); padding: 3px 8px; border-radius: 6px; font-weight: bold; color: var(--text-primary); }
-        .week-w, .week-b { max-height: 200px; opacity: 1; transform: translateY(0); }
+        .week-w, .week-b { max-height: 200px; opacity: 1; transform: translateY(0); transition: all 0.3s; }
         .week-w { border-left: 4px solid var(--accent-white-week); }
         .week-b { border-left: 4px solid var(--accent-black-week); }
-        body.show-black .week-w, body.show-white .week-b { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; border: none; transform: translateY(-20px); pointer-events: none; }
+        body.show-black .week-w, body.show-white .week-b { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; border: none; transform: translateY(-20px); pointer-events: none; overflow: hidden; }
     </style>
 </head>
 <body class="show-white"> 
@@ -282,7 +266,7 @@
         <div class="day-section" id="day-1">
             <div class="day-title" data-translate="monday"><i class="ri-calendar-check-line"></i>Понедельник</div>
             <div class="lesson-card week-both" data-start="08:30" data-end="09:50"><div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div><div class="info-col"><span class="subject" data-translate="algebra">Алгебра (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Джолумбекова М.Т.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
-            <div class="lesson-card week-both" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="russian">Русский язык (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Алдашева Э.К.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
+            <div class="lesson-card week-both" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="physics">Физика (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Керимкулова А.Ш.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
             <div class="lesson-card week-w" data-start="11:30" data-end="12:50"><div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div><div class="info-col"><span class="subject" data-translate="geography">География (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Атанова З.А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
             <div class="lesson-card week-b" data-start="11:30" data-end="12:50"><div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div><div class="info-col"><span class="subject" data-translate="kyrgyzLit">Кыргызская литература</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Орозказиева А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
         </div>
@@ -306,8 +290,8 @@
 
         <div class="day-section" id="day-4">
             <div class="day-title" data-translate="thursday"><i class="ri-calendar-check-line"></i>Четверг</div>
-            <div class="lesson-card week-both" data-start="08:30" data-end="09:50"><div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div><div class="info-col"><span class="subject" data-translate="chemistry">Химия (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Рыспек к Ж.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
-            <div class="lesson-card week-both" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="physicsAstro">Физика (Астрономия)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Керимкулова А.Ш.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
+            <div class="lesson-card week-both" data-start="08:30" data-end="09:50"><div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div><div class="info-col"><span class="subject" data-translate="businessEnglish">Деловой иностр. язык</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Жапаркул к А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
+            <div class="lesson-card week-both" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="russian">Русский язык (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Алдашева Э.К.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
             <div class="lesson-card week-both" data-start="11:30" data-end="12:50"><div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div><div class="info-col"><span class="subject" data-translate="fizra">Физическая культура</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Ташбеков</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">6К</span></span></div></div></div>
         </div>
 
@@ -315,15 +299,14 @@
             <div class="day-title" data-translate="friday"><i class="ri-calendar-check-line"></i>Пятница</div>
             <div class="lesson-card week-w" data-start="08:30" data-end="09:50"><div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div><div class="info-col"><span class="subject" data-translate="manSociety">Человек и общество</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Исраилова А.Б.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
             <div class="lesson-card week-b" data-start="08:30" data-end="09:50"><div class="time-col"><span class="time-start">08:30</span><span class="time-end">09:50</span></div><div class="info-col"><span class="subject" data-translate="biology">Биология (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Эгешова А.А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
-            <div class="lesson-card week-w" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="physics">Физика (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Керимкулова А.Ш.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
-            <div class="lesson-card week-b" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="englishGrammar">Практ. грамматика англ.</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Жапаркул к А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
-            <div class="lesson-card week-both" data-start="11:30" data-end="12:50"><div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div><div class="info-col"><span class="subject" data-translate="businessEnglish">Деловой иностр. язык</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Жапаркул к А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
+            <div class="lesson-card week-w" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="englishGrammar">Практ. грамматика англ.</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Жапаркул к А.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
+            <div class="lesson-card week-b" data-start="10:00" data-end="11:20"><div class="time-col"><span class="time-start">10:00</span><span class="time-end">11:20</span></div><div class="info-col"><span class="subject" data-translate="physics">Физика (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Керимкулова А.Ш.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
+            <div class="lesson-card week-both" data-start="11:30" data-end="12:50"><div class="time-col"><span class="time-start">11:30</span><span class="time-end">12:50</span></div><div class="info-col"><span class="subject" data-translate="chemistry">Химия (прак)</span><div class="details-row"><span class="detail-item"><i class="ri-user-line"></i>Рыспек к Ж.</span><span class="detail-item"><i class="ri-map-pin-line"></i><span class="cabinet-badge">503</span></span></div></div></div>
         </div>
 
     </div>
 
     <script>
-        // --- ПЕРЕВОДЫ (RUS / KG) ---
         const translations = {
             ru: {
                 monday: "<i class='ri-calendar-check-line'></i> Понедельник",
@@ -344,7 +327,6 @@
                 history: "История (прак)",
                 foreignLang: "Иностранный язык",
                 chemistry: "Химия (прак)",
-                physicsAstro: "Физика (Астрономия)",
                 fizra: "Физическая культура",
                 manSociety: "Человек и общество",
                 biology: "Биология (прак)",
@@ -382,7 +364,6 @@
                 history: "Тарых (прак)",
                 foreignLang: "Чет тили",
                 chemistry: "Химия (прак)",
-                physicsAstro: "Физика (Астрономия)",
                 fizra: "Дене тарбия",
                 manSociety: "Адам жана коом",
                 biology: "Биология (прак)",
@@ -403,14 +384,13 @@
             }
         };
 
-        let currentLang = 'ru'; // По умолчанию русский
+        let currentLang = 'ru';
 
         function toggleLanguage() {
             currentLang = currentLang === 'ru' ? 'kg' : 'ru';
             document.getElementById('lang-btn').innerText = currentLang === 'ru' ? 'RU' : 'KG';
             applyTranslations();
-            updateStatusText(); // Обновляем статус недели
-            // Обновляем плейсхолдер блокнота
+            updateStatusText();
             document.getElementById('notepad-area').placeholder = translations[currentLang].placeholderNote;
         }
 
@@ -421,47 +401,28 @@
                     el.innerHTML = translations[currentLang][key];
                 }
             });
-            // Обновление бейджика "Идет сейчас", если он есть
             const badge = document.querySelector('.now-badge');
             if (badge) badge.innerText = translations[currentLang].nowActive;
         }
 
-        // --- ДАННЫЕ СТУДЕНТОВ ---
         const students = [
-            { name: "Абдулатипова Миранда", d: "08.12" },
-            { name: "Абдылдабекова Алтынай", d: "24.09" },
-            { name: "Акинова Азат", d: "09.08" },
-            { name: "Алмасбеков Валихан", d: "08.01" },
-            
-            { name: "Асанбаева Канымжан", d: "17.05" },
-            { name: "Асанова Жамиля", d: "03.10" },
-            { name: "Алыгулова Камила", d: "24.03" },
-            { name: "Гульматов Расул", d: "15.05" },
-            { name: "Джапарова Назик", d: "12.08" },
-            { name: "Жолдошказиева Чолпонай", d: "30.12" },
-            { name: "Карабекова Айтолкун", d: "13.02" },
-            { name: "Каныбеков Эрболсун", d: "27.12" },
-          
-            { name: "Куйкеева София", d: "21.02" },
-            { name: "Максатбекова Ханзада", d: "21.04" },
-            { name: "Майрамбекова Ханзада", d: "22.12" },
-            { name: "Мээрбекова Нурайым", d: "19.06" },
-            { name: "Негматуллаева Раяна", d: "07.09" },
-            { name: "Омурбекова Акылай", d: "02.06" },
-            { name: "Оруналыева Азиза", d: "13.10" },
-            { name: "Русланбеков Чынгыз", d: "26.03" },
-            { name: "Сазанов Нурбол", d: "22.10" },
-            { name: "Съездбеков Байсал", d: "04.08" },
-            { name: "Токтогулов Азимбек", d: "08.02" },
-            { name: "Тезекбаева Нуржылдыз", d: "19.09" },
-            { name: "Туратбеков Нурбол", d: "27.09" },
-            { name: "Турдукулова Бегимай", d: "07.10" },
-            { name: "Усенбаева Жасмина", d: "19.02" },
-            { name: "Чынгызов Актан", d: "16.08" },
+            { name: "Абдулатипова Миранда", d: "08.12" }, { name: "Абдылдабекова Алтынай", d: "24.09" },
+            { name: "Акинова Азат", d: "09.08" }, { name: "Алмасбеков Валихан", d: "08.01" },
+            { name: "Асанбаева Канымжан", d: "17.05" }, { name: "Асанова Жамиля", d: "03.10" },
+            { name: "Алыгулова Камила", d: "24.03" }, { name: "Гульматов Расул", d: "15.05" },
+            { name: "Джапарова Назик", d: "12.08" }, { name: "Жолдошказиева Чолпонай", d: "30.12" },
+            { name: "Карабекова Айтолкун", d: "13.02" }, { name: "Каныбеков Эрболсун", d: "27.12" },
+            { name: "Куйкеева София", d: "21.02" }, { name: "Максатбекова Ханзада", d: "21.04" },
+            { name: "Майрамбекова Ханзада", d: "22.12" }, { name: "Мээрбекова Нурайым", d: "19.06" },
+            { name: "Негматуллаева Раяна", d: "07.09" }, { name: "Омурбекова Акылай", d: "02.06" },
+            { name: "Оруналыева Азиза", d: "13.10" }, { name: "Русланбекова Чынгыз", d: "26.03" },
+            { name: "Сазанов Нурбол", d: "22.10" }, { name: "Съездбеков Байсал", d: "04.08" },
+            { name: "Токтогулов Азимбек", d: "08.02" }, { name: "Тезекбаева Нуржылдыз", d: "19.09" },
+            { name: "Туратбеков Нурбол", d: "27.09" }, { name: "Турдукулова Бегимай", d: "07.10" },
+            { name: "Усенбаева Жасмина", d: "19.02" }, { name: "Чынгызов Актан", d: "16.08" },
             { name: "Эликбаева Самира", d: "07.02" }
         ];
 
-        // --- ЛОГИКА НЕДЕЛИ ---
         const toggle = document.getElementById('weekToggle');
         const body = document.body;
         const statusText = document.getElementById('status-text');
@@ -474,24 +435,14 @@
         }
 
         function updateStatusText() {
-            // Проверяем текущий класс body
             const isWhite = body.classList.contains('show-white');
-            if (isWhite) {
-                statusText.innerText = translations[currentLang].weekWhite;
-            } else {
-                statusText.innerText = translations[currentLang].weekBlack;
-            }
+            statusText.innerText = isWhite ? translations[currentLang].weekWhite : translations[currentLang].weekBlack;
         }
 
         function updateWeekVisuals(isWhite) {
-            if (isWhite) {
-                body.className = 'show-white';
-                toggle.checked = false; 
-            } else {
-                body.className = 'show-black';
-                toggle.checked = true;
-            }
-            updateStatusText(); // Обновляем текст в зависимости от языка
+            body.className = isWhite ? 'show-white' : 'show-black';
+            toggle.checked = !isWhite;
+            updateStatusText();
             setTimeout(highlightCurrentLesson, 300);
         }
 
@@ -502,66 +453,33 @@
             updateWeekVisuals(!this.checked);
         });
 
-        /* --- ЛОГИКА АРКАН ТАРТЫШ --- */
-        let battleScore = 50; 
-        let isBattleActive = false;
-        const step = 6; 
-        const knot = document.getElementById('knot');
+        let battleScore = 50, isBattleActive = false;
+        const step = 6, knot = document.getElementById('knot');
 
-        function openBattle() {
-            document.getElementById('modal-battle').style.display = 'flex';
-            startBattle();
-        }
-
-        function startBattle() {
-            battleScore = 50;
-            isBattleActive = true;
-            knot.style.top = '50%';
-            document.getElementById('win-screen').style.display = 'none';
-        }
-
+        function openBattle() { document.getElementById('modal-battle').style.display = 'flex'; startBattle(); }
+        function startBattle() { battleScore = 50; isBattleActive = true; knot.style.top = '50%'; document.getElementById('win-screen').style.display = 'none'; }
         function tap(team) {
             if (!isBattleActive) return;
-
-            if (team === 'red') {
-                battleScore -= step; 
-            } else {
-                battleScore += step; 
-            }
-
-            if (battleScore < 0) battleScore = 0;
-            if (battleScore > 100) battleScore = 100;
-            
+            battleScore = (team === 'red') ? battleScore - step : battleScore + step;
+            if (battleScore < 0) battleScore = 0; if (battleScore > 100) battleScore = 100;
             knot.style.top = battleScore + '%';
-
-            if (battleScore <= 5) endGame('КЫЗЫЛ'); 
-            if (battleScore >= 95) endGame('КӨК');   
+            if (battleScore <= 5) endGame('КЫЗЫЛ'); if (battleScore >= 95) endGame('КӨК');   
         }
 
-        const btnRed = document.getElementById('team-red');
-        const btnBlue = document.getElementById('team-blue');
-        const btnRestart = document.getElementById('restart-btn');
-
-        btnRed.addEventListener('touchstart', function(e) { e.preventDefault(); tap('red'); }, {passive: false});
-        btnBlue.addEventListener('touchstart', function(e) { e.preventDefault(); tap('blue'); }, {passive: false});
-        btnRed.onclick = function() { tap('red'); };
-        btnBlue.onclick = function() { tap('blue'); };
-        btnRestart.onclick = function() { startBattle(); };
+        const btnRed = document.getElementById('team-red'), btnBlue = document.getElementById('team-blue'), btnRestart = document.getElementById('restart-btn');
+        btnRed.addEventListener('touchstart', (e) => { e.preventDefault(); tap('red'); }, {passive: false});
+        btnBlue.addEventListener('touchstart', (e) => { e.preventDefault(); tap('blue'); }, {passive: false});
+        btnRed.onclick = () => tap('red'); btnBlue.onclick = () => tap('blue'); btnRestart.onclick = startBattle;
 
         function endGame(winner) {
             isBattleActive = false;
-            // Текст победы тоже на нужном языке (можно усложнить, но пока оставим как есть, так как логика простая)
             document.getElementById('win-msg').innerText = winner + ' ЖЕҢДИ!';
             document.getElementById('win-msg').style.color = winner === 'КЫЗЫЛ' ? '#ef4444' : '#3b82f6';
             document.getElementById('win-screen').style.display = 'flex';
         }
 
-        /* ОСТАЛЬНОЙ JS */
         const today = new Date();
-        const dd = String(today.getDate()).padStart(2, '0');
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const todayStr = `${dd}.${mm}`;
-
+        const todayStr = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}`;
         const bdayPerson = students.find(s => s.d === todayStr);
         if (bdayPerson) {
             document.getElementById('bday-person').innerText = bdayPerson.name;
@@ -572,7 +490,7 @@
         function openList() {
             const listCont = document.getElementById('list-container');
             listCont.innerHTML = students.map((s, i) => {
-                const isMe = s.name.includes('Актан') || s.name.includes('Нурбол') ? 'highlight-name' : '';
+                const isMe = s.name.includes('Нурбол') ? 'highlight-name' : '';
                 const isBday = s.d === todayStr ? '<i class="ri-cake-2-fill bday-icon"></i>' : '';
                 return `<div class="student-row ${isMe}"><span>${i+1}. ${s.name}</span><span>${s.d} ${isBday}</span></div>`;
             }).join('');
@@ -589,7 +507,7 @@
         async function fetchWeather() {
             const w = document.getElementById('weather-widget');
             try {
-                const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=42.87&longitude=74.59&current=temperature_2m,weather_code');
+                const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=42.87&longitude=74.59&current=temperature_2m');
                 const d = await r.json();
                 w.innerHTML = `<i class="ri-sun-line"></i> ${Math.round(d.current.temperature_2m)}°C`;
             } catch (e) { w.innerHTML = '<i class="ri-cloud-off-line"></i> -'; }
@@ -597,33 +515,21 @@
         fetchWeather();
 
         function highlightCurrentLesson() {
-            const now = new Date();
-            const day = now.getDay(); 
-            const currentTimeValue = now.getHours() * 60 + now.getMinutes();
-
+            const now = new Date(), day = now.getDay(), currentTime = now.getHours() * 60 + now.getMinutes();
             document.querySelectorAll('.current-day').forEach(el => el.classList.remove('current-day'));
-            document.querySelectorAll('.now-active').forEach(el => {
-                el.classList.remove('now-active');
-                const badge = el.querySelector('.now-badge');
-                if(badge) badge.remove();
-            });
+            document.querySelectorAll('.now-active').forEach(el => { el.classList.remove('now-active'); const b = el.querySelector('.now-badge'); if(b) b.remove(); });
 
             if (day >= 1 && day <= 5) {
                 const daySection = document.getElementById('day-' + day);
                 if (daySection) {
                     daySection.classList.add('current-day');
-                    const lessons = daySection.querySelectorAll('.lesson-card');
-                    lessons.forEach(lesson => {
+                    daySection.querySelectorAll('.lesson-card').forEach(lesson => {
                         if (window.getComputedStyle(lesson).maxHeight === '0px') return;
-                        const startParts = lesson.dataset.start.split(':').map(Number);
-                        const endParts = lesson.dataset.end.split(':').map(Number);
-                        if (currentTimeValue >= startParts[0]*60+startParts[1] && currentTimeValue < endParts[0]*60+endParts[1]) {
+                        const start = lesson.dataset.start.split(':').map(Number), end = lesson.dataset.end.split(':').map(Number);
+                        if (currentTime >= start[0]*60+start[1] && currentTime < end[0]*60+end[1]) {
                             lesson.classList.add('now-active');
-                            // Добавляем бейджик через JS, чтобы можно было переводить
-                            const badge = document.createElement('div');
-                            badge.className = 'now-badge';
-                            badge.innerText = translations[currentLang].nowActive;
-                            lesson.appendChild(badge);
+                            const b = document.createElement('div'); b.className = 'now-badge'; b.innerText = translations[currentLang].nowActive;
+                            lesson.appendChild(b);
                         }
                     });
                 }
@@ -634,4 +540,6 @@
     </script>
 </body>
 </html>
+</html>
+
 
